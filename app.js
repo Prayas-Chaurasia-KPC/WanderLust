@@ -32,10 +32,9 @@ const reviewsRouter = require('./routes/review_route.js') ;
 const userRouter = require('./routes/user_route.js') ;
 
 
-const dbURL = process.env.ATLASDB_URL ;
-// const url = "mongodb+srv://Wander-Lust:TIQ1eVLb5SuuE6N0@wanderlust.zkxo9.mongodb.net/?retryWrites=true&w=majority&appName=WanderLust";
+const url = process.env.ATLASDB_URL ;
 
-const url = "mongodb://127.0.0.1:27017/wanderLust" ;
+// const url = "mongodb://127.0.0.1:27017/wanderLust" ;
 
 async function main(){
     await mongoose.connect(url);
@@ -56,18 +55,18 @@ app.use(express.static(path.join(__dirname,"/public"))) ;
 app.use(cookieParser("secret")) ;
 
 
-// const store =   MongoStore.create({
-//     mongoUrl:url,
-//     crypto:{
-//         secret:process.env.SECRET
-//     },
-//     touchAfter: 24 * 3600 ,
-// })
+const store =   MongoStore.create({
+    mongoUrl:url,
+    crypto:{
+        secret:process.env.SECRET
+    },
+    touchAfter: 24 * 3600 ,
+})
 
 
 // EXPRESS SRSSION-----------------------------------------------------
 const sessionOptions = {
-    // store,
+    store,
     secret:process.env.SECRET,
     resave:false,
     saveUninitialized:true,
@@ -78,9 +77,9 @@ const sessionOptions = {
     }
 } ;
 
-// store.on("error",(err)=>{
-//     console.error("Failed to Load MONGO SESSION STORE",err) ;
-// })
+store.on("error",(err)=>{
+    console.error("Failed to Load MONGO SESSION STORE",err) ;
+})
 
 app.use(session(sessionOptions)) ;
 app.use(flash()) ;
