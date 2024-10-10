@@ -43,6 +43,10 @@ const listingSchema = mongoose.Schema({
     owner:{
         type: mongoose.Schema.ObjectId,
         ref: 'User'
+    },
+    genre: {
+        type: String,
+        required: [true, 'Genre is required'],
     }
 });
 
