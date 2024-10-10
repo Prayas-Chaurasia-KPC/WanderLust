@@ -29,6 +29,7 @@ module.exports.newListCreated = async (req,res,next)=>{
     const newListing = new listing(req.body.listing) ;
     newListing.owner = req.user._id ; 
     newListing.image = {url, filename} ;
+    newListing.genre = req.body.genre ;
     await newListing.save() ;
     req.flash("success","New Listing Created Successfully") ;
     res.redirect('/listings') ;
@@ -53,6 +54,7 @@ module.exports.updateList = async (req, res) => {
         const url = req.file.path ;
         const filename = req.file.filename ;
         updateListing.image = {url, filename} ;
+        updateListing.genre = req.body.genre ;
         await updateListing.save() ;
       }
       req.flash("success","Listing Edited Succesfully") ;
