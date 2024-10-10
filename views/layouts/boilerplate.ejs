@@ -26,50 +26,72 @@
     <script src="/js/script.js"></script>
     <script>
         const searchForm = document.querySelector('.search-Form');
-        const inp = document.querySelector('.search-bar');
-        const showListings = document.querySelectorAll('.list-title'); // This selects the titles
-        const showListingLocation = document.querySelectorAll('.list-location'); // This selects the locations
-        const showListingCountry = document.querySelectorAll('.list-country'); // This selects the countries
-        const showListingGenre = document.querySelectorAll('.list-genre'); // This selects the genres in the listings
-        const showFilters = document.querySelectorAll('.filter p'); // This selects the filters for genres
+const inp = document.querySelector('.search-bar');
+const showListings = document.querySelectorAll('.list-title'); // This selects the titles
+const showListingLocation = document.querySelectorAll('.list-location'); // This selects the locations
+const showListingCountry = document.querySelectorAll('.list-country'); // This selects the countries
+const showListingGenre = document.querySelectorAll('.list-genre'); // This selects the genres in the listings
+const showFilters = document.querySelectorAll('.filter p'); // This selects the filters for genres
 
-        showFilters.forEach((filterItem) => {
-            filterItem.addEventListener('click', () => {
-                const selectedGenre = filterItem.textContent.toLowerCase(); // Get the genre from the clicked filter
-    
-                showListingGenre.forEach((listingGenre) => {
-                    const listingCard = listingGenre.closest('.card'); // Find the card element associated with this genre
-                    const genreText = listingGenre.textContent.toLowerCase(); // Get the genre of this listing
+showFilters.forEach((filterItem) => {
+    // Add event listener for each filter item
+    filterItem.addEventListener('click', () => {
+        const selectedGenre = filterItem.textContent.toLowerCase(); // Get the genre from the clicked filter
 
-                    if (selectedGenre.includes(genreText)) {
-                        listingCard.style.display = 'block'; // Show the card if it matches the selected filter
-                    } else {
-                        listingCard.style.display = 'none'; // Hide the card if it doesn't match
-                    }
-                });
-            });
+        // Remove 'active-filter' class and reset color for all filters
+        showFilters.forEach(f => {
+            f.classList.remove('active-filter'); // Remove 'active' class from all filters
+            f.style.color = ''; // Reset color to default
         });
 
+        // Set the clicked filter as active
+        filterItem.classList.add('active-filter'); // Add 'active' class to the clicked filter
+        filterItem.style.color = 'red'; // Apply red color for active filter
+        filterItem.style.opacity = 1; // Apply red color for active filter
 
+        // Filter the listings by genre
+        showListingGenre.forEach((listingGenre) => {
+            const listingCard = listingGenre.closest('.card'); // Find the card element associated with this genre
+            const genreText = listingGenre.textContent.toLowerCase(); // Get the genre of this listing
 
-    searchForm.addEventListener('submit', function(event) {
-        event.preventDefault(); // Prevent the page from reloading
-        const searchResult = inp.value.toLowerCase(); // Convert search input to lowercase for case-insensitive comparison
-    
-        showListings.forEach((item, index) => {
-            const title = item.textContent.toLowerCase(); // Get the title
-            const location = showListingLocation[index].textContent.toLowerCase(); // Get the location
-            const country = showListingCountry[index].textContent.toLowerCase(); // Get the country
-            const listingCard = item.closest('.card'); // Find the closest card element
-
-            // If the search input matches the title, location, or country, show the card
-            if (title.includes(searchResult) || location.includes(searchResult) || country.includes(searchResult)) {
-                listingCard.style.display = 'block'; // Show the card if it matches
+            if (genreText.includes(selectedGenre)) {
+                listingCard.style.display = 'block'; // Show the card if it matches the selected filter
             } else {
                 listingCard.style.display = 'none'; // Hide the card if it doesn't match
             }
         });
+
+        // Clear the search input after applying a filter
+        inp.value = '';
     });
+});
+
+// Search form submission event listener
+searchForm.addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevent the page from reloading
+    const searchResult = inp.value.toLowerCase(); // Convert search input to lowercase for case-insensitive comparison
+
+    // Remove active filter when searching
+    showFilters.forEach(f => {
+        f.classList.remove('active-filter'); // Remove 'active' class from all filters
+        f.style.color = ''; // Reset color to default
+    });
+
+    // Filter listings by search result
+    showListings.forEach((item, index) => {
+        const title = item.textContent.toLowerCase(); // Get the title
+        const location = showListingLocation[index].textContent.toLowerCase(); // Get the location
+        const country = showListingCountry[index].textContent.toLowerCase(); // Get the country
+        const listingCard = item.closest('.card'); // Find the closest card element
+
+        // If the search input matches the title, location, or country, show the card
+        if (title.includes(searchResult) || location.includes(searchResult) || country.includes(searchResult)) {
+            listingCard.style.display = 'block'; // Show the card if it matches
+        } else {
+            listingCard.style.display = 'none'; // Hide the card if it doesn't match
+        }
+    });
+});
 
     </script>
 </body>
