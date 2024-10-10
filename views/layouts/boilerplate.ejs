@@ -24,5 +24,53 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="/js/script.js"></script>
+    <script>
+        const searchForm = document.querySelector('.search-Form');
+const inp = document.querySelector('.search-bar');
+const showListings = document.querySelectorAll('.list-title'); // This selects the titles
+const showListingLocation = document.querySelectorAll('.list-location'); // This selects the locations
+const showListingCountry = document.querySelectorAll('.list-country'); // This selects the countries
+const showListingGenre = document.querySelectorAll('.list-genre'); // This selects the genres in the listings
+const showFilters = document.querySelectorAll('.filter p'); // This selects the filters for genres
+
+showFilters.forEach((filterItem) => {
+    filterItem.addEventListener('click', () => {
+        const selectedGenre = filterItem.textContent.toLowerCase(); // Get the genre from the clicked filter
+
+        showListingGenre.forEach((listingGenre) => {
+            const listingCard = listingGenre.closest('.card'); // Find the card element associated with this genre
+            const genreText = listingGenre.textContent.toLowerCase(); // Get the genre of this listing
+
+            if (selectedGenre.includes(genreText)) {
+                listingCard.style.display = 'block'; // Show the card if it matches the selected filter
+            } else {
+                listingCard.style.display = 'none'; // Hide the card if it doesn't match
+            }
+        });
+    });
+});
+
+
+
+searchForm.addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevent the page from reloading
+    const searchResult = inp.value.toLowerCase(); // Convert search input to lowercase for case-insensitive comparison
+    
+    showListings.forEach((item, index) => {
+        const title = item.textContent.toLowerCase(); // Get the title
+        const location = showListingLocation[index].textContent.toLowerCase(); // Get the location
+        const country = showListingCountry[index].textContent.toLowerCase(); // Get the country
+        const listingCard = item.closest('.card'); // Find the closest card element
+
+        // If the search input matches the title, location, or country, show the card
+        if (title.includes(searchResult) || location.includes(searchResult) || country.includes(searchResult)) {
+            listingCard.style.display = 'block'; // Show the card if it matches
+        } else {
+            listingCard.style.display = 'none'; // Hide the card if it doesn't match
+        }
+    });
+});
+
+    </script>
 </body>
 </html>
