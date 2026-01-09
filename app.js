@@ -65,17 +65,28 @@ const store =   MongoStore.create({
 
 
 // EXPRESS SRSSION-----------------------------------------------------
+// const sessionOptions = {
+//     // store,
+//     secret:process.env.SECRET,
+//     resave:false,
+//     saveUninitialized:true,
+//     cookie:{
+//         expires:Date.now() + 7*24*60*60*1000,
+//         maxAge:7*24*60*60*1000,
+//         httpOnly:true,
+//     }
+// } ;
 const sessionOptions = {
-    // store,
-    secret:process.env.SECRET,
-    resave:false,
-    saveUninitialized:true,
-    cookie:{
-        expires:Date.now() + 7*24*60*60*1000,
-        maxAge:7*24*60*60*1000,
-        httpOnly:true,
+    store: store, // <--- UNCOMMENT THIS (or just 'store,')
+    secret: process.env.SECRET || "mysupersecretcode", // Fallback if .env is missing
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+        httpOnly: true,
     }
-} ;
+};
 
 store.on("error",(err)=>{
     console.error("Failed to Load MONGO SESSION STORE",err) ;
@@ -116,3 +127,4 @@ app.use((err,req,res,next)=>{
 app.listen(3000,()=>{
     console.log('listening on port 3000') ;
 })
+
