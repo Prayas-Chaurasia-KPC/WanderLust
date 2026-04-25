@@ -1,0 +1,301 @@
+<style>
+    #filters {
+        margin-top: 1rem;
+        display: flex;
+        flex-direction: row;
+        gap: 4rem;
+        justify-items: center;
+        align-items: center;
+        justify-content:space-evenly;
+        position: relative;
+        /* border: 2px solid black ; */
+    }
+    .filter-places{
+        width: 75% ;
+        display: flex;
+        /* border: 2px solid black; */
+        
+    }
+    .filter {
+        text-align: center;
+        margin-top: 1rem;
+        opacity: 0.6;
+        cursor: pointer;
+        user-select: none;
+    }
+    .filter.active-filter {
+        opacity: 1;
+        color: red;
+        font-weight: bold;
+    }
+    .tax-toggle {
+        width: auto;
+        background-color: rgb(255, 255, 255);
+        padding: 0.5rem;
+        border: 2px solid grey;
+        border-radius: 0.5rem;
+        /* margin-left: 1rem; */
+        justify-content: center;
+        justify-items: center;
+        align-items: center;
+    }
+    .priceAfterTax {
+        display: none;
+    }
+    .filter{
+        color:black;
+        transition: all 0.3s ease-in-out;
+    }
+    .filter:hover{
+        color: red;
+        scale: 1.2;
+        transition: ease-in-out;
+    }
+    .filter-ops {
+        width: auto;
+        display: flex;
+        flex-direction: row;
+        gap: 2rem;
+        padding-left: 4rem;
+        padding-right: 4rem;
+        z-index: 0;
+        overflow-x: auto;
+        scroll-behavior: smooth;
+        scrollbar-width: none;
+    }
+    .filter-ops::-webkit-scrollbar {
+        display: none;
+    }
+    .arrow-filter {
+    position: absolute;
+    top: 50%; /* Keep this here so it's always vertically centered */
+    color: red;
+    background-color: white;
+    border: 1px solid black;
+    padding: 1rem;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 1;
+    display: block;
+    
+    /* Animation base states */
+    opacity: 0; 
+    visibility: hidden; 
+    /* Chain both transforms together: center it, AND shrink it */
+    transform: translateY(-50%) scale(0.8); 
+    transition: all 0.3s ease-in-out;
+}
+
+.filter-places:hover .arrow-filter {
+    opacity: 1;
+    visibility: visible;
+    /* Keep the centering, but scale it back up to normal size */
+    transform: translateY(-50%) scale(1); 
+}
+
+    .arrow-filter:hover {
+        color: white;
+        background-color: red;
+    }
+    .right-filter {
+        /* left: 70%; */
+        right: 25% ;
+    }
+    .left-filter {
+        left: 1%;
+    }
+    .list-location-country {
+        display: none;
+    }
+    .list-country{
+        display: block;
+    }
+
+    .card-text{
+        padding: 0.5rem;
+    }
+
+    /* ── FIX: listings use flex so hidden cols don't leave ghost gaps ── */
+    .show-all-listings {
+        display: flex !important;
+        flex-wrap: wrap;
+    }
+    /* col wrapper — hidden entirely so no empty space remains */
+    .listing-col {
+        display: flex;          /* keeps card stretching full width */
+        padding: 0 12px;        /* match Bootstrap gutter */
+        margin-bottom: 1.5rem;
+        width: 100%;
+    }
+    @media (min-width: 768px)  { .listing-col { width: 50%; } }
+    @media (min-width: 992px)  { .listing-col { width: 33.333%; } }
+
+    .listing-col.hidden-col {
+        display: none;          /* removes from flow entirely — no gap left behind */
+    }
+
+    @media (max-width: 992px) {
+        .filter-ops {
+            width: 90%;
+            padding-left: 1rem;
+            padding-right: 1rem;
+            gap: 1rem;
+        }
+        .arrow-filter {
+            padding: 0.75rem;
+            top: 20%;
+            transform: translateY(-50%);
+        }
+        .right-filter {
+            left: 90%;
+        }
+        .left-filter {
+            left: 0;
+        }
+        .tax-toggle {
+            margin: 0;
+        }
+        #filters {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+    }
+</style>
+
+<% layout('/layouts/boilerplate') -%>
+
+<div id="filters">
+
+    <div class="filter-places">
+
+        <div class="left-filter arrow-filter">
+            <i class="fa-solid fa-arrow-left fa-xl"></i>
+        </div>
+
+        <div class="filter-ops">
+        <div class="filter active-filter" data-filter="all">
+            <div><i class="fa-solid fa-arrow-trend-up"></i></div>
+            <p><b>Trending</b></p>
+        </div>
+        <div class="filter" data-filter="Rooms">
+            <div><i class="fa-solid fa-bed"></i></div>
+            <p><b>Rooms</b></p>
+        </div>
+        <div class="filter" data-filter="Iconic City">
+            <div><i class="fa-solid fa-mountain-city"></i></div>
+            <p><b>Iconic City</b></p>
+        </div>
+        <div class="filter" data-filter="Castles">
+            <div><i class="fa-brands fa-fort-awesome"></i></div>
+            <p><b>Castles</b></p>
+        </div>
+        <div class="filter" data-filter="Amazing Pools">
+            <div><i class="fa-solid fa-person-swimming"></i></div>
+            <p><b>Amazing Pools</b></p>
+        </div>
+        <div class="filter" data-filter="Camping">
+            <div><i class="fa-solid fa-tent"></i></div>
+            <p><b>Camping</b></p>
+        </div>
+        <div class="filter" data-filter="Farms">
+            <div><i class="fa-solid fa-cow"></i></div>
+            <p><b>Farms</b></p>
+        </div>
+        <div class="filter" data-filter="Arctic">
+            <div><i class="fa-solid fa-person-snowboarding"></i></div>
+            <p><b>Arctic</b></p>
+        </div>
+        <div class="filter" data-filter="Domes">
+            <div><i class="fa-solid fa-igloo"></i></div>
+            <p><b>Domes</b></p>
+        </div>
+        <div class="filter" data-filter="Boats">
+            <div><i class="fa-solid fa-ship"></i></div>
+            <p><b>Boats</b></p>
+        </div>
+        </div>
+
+        <div class="right-filter arrow-filter">
+            <i class="fa-solid fa-arrow-right fa-xl"></i>
+        </div>
+      
+    </div>
+
+    <div class="tax-toggle">
+        <div class="form-check-reverse form-switch">
+            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+            <label class="form-check-label" for="flexSwitchCheckDefault">Display Total After Taxes</label>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-3 show-all-listings">
+    <% for(let listing of allListings){ %>
+        <%
+            // Normalize genre to match data-filter values exactly
+            let genre = listing.genre || "all";
+        %>
+        <div class="listing-col" data-category="<%= genre %>">
+            <a href="/listings/<%= listing._id %>" style="text-decoration: none; width: 100%;">
+                <div class="card h-100">
+                    <img src="<%= listing.image.url %>" class="card-img-top" alt="Listing Image" style="height: 20rem; object-fit: cover;">
+                    <div class="card-body">
+                        <div class="card-text">
+                            <h5 class="list-title"><b><%= listing.title %></b></h5>
+                            <h5 class="list-location list-location-country"><b><%= listing.location %></b></h5>
+                            <h6 class="list-country list-location-country"><%= listing.country %></h6>
+                            <h5 class="list-genre list-location-country"><b><%= listing.genre %></b></h5>
+                            <p>&#x20B9; <%= listing.price.toLocaleString("en-IN") %> / Night
+                                <i class="priceAfterTax"> + 18% GST</i>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    <% } %>
+</div>
+
+<script>
+    // ── Tax toggle ──────────────────────────────────────────────
+    let taxBtn = document.getElementById("flexSwitchCheckDefault");
+    taxBtn.addEventListener("click", () => {
+        let taxText = document.getElementsByClassName("priceAfterTax");
+        for (let tax of taxText) {
+            tax.style.display = (tax.style.display !== "inline") ? "inline" : "none";
+        }
+    });
+
+    // ── Arrow scroll ────────────────────────────────────────────
+    let filterStrip = document.querySelector(".filter-ops");
+    document.querySelector(".right-filter").addEventListener("click", () => {
+        filterStrip.scrollBy({ left: 200, behavior: "smooth" });
+    });
+    document.querySelector(".left-filter").addEventListener("click", () => {
+        filterStrip.scrollBy({ left: -200, behavior: "smooth" });
+    });
+
+    // ── Category filter ─────────────────────────────────────────
+    const filterBtns = document.querySelectorAll(".filter");
+    const listingCols = document.querySelectorAll(".listing-col");
+
+    function applyFilter(selected) {
+        listingCols.forEach(col => {
+            if (selected === "all" || col.dataset.category === selected) {
+                col.classList.remove("hidden-col");
+            } else {
+                col.classList.add("hidden-col");
+            }
+        });
+    }
+
+    filterBtns.forEach(btn => {
+        btn.addEventListener("click", () => {
+            filterBtns.forEach(b => b.classList.remove("active-filter"));
+            btn.classList.add("active-filter");
+            applyFilter(btn.dataset.filter);
+            inp.value = ''; // clear search when filter is clicked
+        });
+    });
+</script>

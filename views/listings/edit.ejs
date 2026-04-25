@@ -1,0 +1,88 @@
+<% layout('/layouts/boilerplate') -%>
+<body>
+
+    <div class="row mb-3">
+        <div class="col-8 offset-2">
+            <h1 class="mb-3">Edit <%= listID.title %> List</h1>
+            <form method="POST" action="/listings/<%= listID._id %>?_method=PUT" novalidate class="needs-validation" enctype="multipart/form-data">
+
+                <div class="mb-3">
+                    <label for="title" class="form-label"><b>Title:</b></label>
+                    <input type="text" value="<%= listID.title %>" name="listID[title]" class="form-control" required>
+                    <div class="valid-feedback">Filled</div>
+                    <div class="invalid-feedback">Please Give Some Title !</div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="description" class="form-label"><b>Description:</b></label>
+                    <textarea id="description-editor" name="listID[description]" class="form-control" required><%= listID.description %></textarea>
+                    <div class="valid-feedback">Filled</div>
+                    <div class="invalid-feedback">Provide Description!</div>
+                </div>
+
+                <div class="mx-auto" style="width: 300px;" >
+                    <img src="<%= listID.image.url %>" alt="" style="width: 300px; border:1px; box-sizing: border-box; border-radius: 20px;">
+                    <caption><%= listID.image.filename %></caption>
+                </div>
+                <div class="mb-3">
+                    <label for="image" class="form-label"><b>Image:</b></label>
+                    <input type="file" name="listID[image]" class="form-control">
+                    <div class="valid-feedback">Filled</div>
+                    <div class="invalid-feedback">Provide Image Link</div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="location" class="form-label"><b>Location:</b></label>
+                    <input type="text" value="<%= listID.location %>" name="listID[location]" class="form-control" required>
+                    <div class="valid-feedback">Filled</div>
+                    <div class="invalid-feedback">Location Cann't be Empty</div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="genre" class="form-label"><b>Genre:</b></label>
+                    <select id="genre" name="listID[genre]" class="form-control" required>
+                        <option value="Rooms" <%= listID.genre === 'Rooms' ? 'selected' : '' %>>Rooms</option>
+                        <option value="Iconic City" <%= listID.genre === 'Iconic City' ? 'selected' : '' %>>Iconic City</option>
+                        <option value="Castles" <%= listID.genre === 'Castles' ? 'selected' : '' %>>Castles</option>
+                        <option value="Amazing Pools" <%= listID.genre === 'Amazing Pools' ? 'selected' : '' %>>Amazing Pools</option>
+                        <option value="Camping" <%= listID.genre === 'Camping' ? 'selected' : '' %>>Camping</option>
+                        <option value="Farms" <%= listID.genre === 'Farms' ? 'selected' : '' %>>Farms</option>
+                        <option value="Arctic" <%= listID.genre === 'Arctic' ? 'selected' : '' %>>Arctic</option>
+                        <option value="Domes" <%= listID.genre === 'Domes' ? 'selected' : '' %>>Domes</option>
+                        <option value="Boats" <%= listID.genre === 'Boats' ? 'selected' : '' %>>Boats</option>
+                    </select>
+                    <div class="valid-feedback">Filled</div>
+                    <div class="invalid-feedback">Genre Cann't be Empty</div>
+                </div>
+
+                <div class="row">
+                    <div class="mb-3 col-md-4">
+                        <label for="price" class="form-label"><b>Price:</b></label>
+                        <input type="number" value="<%= listID.price %>" name="listID[price]" class="form-control" required>
+                        <div class="valid-feedback">Filled</div>
+                        <div class="invalid-feedback">Please Enter Valid Price</div>
+                    </div>
+    
+                    <div class="mb-3 col-md-8">
+                        <label for="country" class="form-label"><b>Country:</b></label>
+                        <input type="text" value="<%= listID.country %>" name="listID[country]" class="form-control" required>
+                        <div class="valid-feedback">Filled</div>
+                        <div class="invalid-feedback">Country Cann't be Empty</div>
+                    </div>
+                </div>
+
+                <button class="mb-3 addList-btn">Edit List</button>
+
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#description-editor'))
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
+</body>
