@@ -1,104 +1,123 @@
 <style>
-  .form-inline button, .form-inline button:hover{
-    background-color: red;
+  /* Base Navbar styling */
+  .navbar {
+    box-shadow: 0 1px 10px rgba(0,0,0,0.05); /* Slight shadow for depth */
+  }
+
+  /* Search Button Styling */
+  .form-inline button, .form-inline button:hover {
+    background-color: #fe424d; /* Wanderlust Brand Color */
     color: #fff;
     border-radius: 25px;
-    padding: 0 1rem ;
+    padding: 0.5rem 1.2rem;
+    border: none;
+    transition: all 0.3s ease-in-out;
   }
-  .nav-search-btn{
-    /* border: 2px solid black; */
-    width: 60% ;
+  .form-inline button:hover {
+    background-color: #e0313b;
+    transform: scale(1.02);
   }
-  .search-input{
-    padding: 0.5rem;
-    padding-left: 1rem;
+
+  /* Search Container & Input */
+  .nav-search-btn {
+    width: 100%;
+    max-width: 500px; /* Prevents it from getting absurdly wide on 4K monitors */
+  }
+  .search-input {
+    padding: 0.5rem 1.2rem;
     border-radius: 25px;
     font-size: 1rem;
-    margin-right: 0.5rem;
-    border: 2px solid black;
-    width: 47rem ;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    transition: all 0.3s ease-in-out;
   }
-  .btn-search i{
-    display: inline;
+  .search-input:focus {
+    outline: none;
+    border-color: #fe424d;
+    box-shadow: 0 2px 8px rgba(254, 66, 77, 0.3);
+  }
+  .btn-search i {
     margin-right: 0.4rem;
   }
 
+  /* Mobile Responsive Fixes */
+  @media (max-width: 991.98px) {
+    .navbar-collapse {
+      background-color: #f8f9fa;
+      padding: 1rem 1.5rem;
+      border-radius: 1rem;
+      margin-top: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    
+    .navbar-nav {
+      align-items: flex-start;
+      width: 100%;
+    }
 
+    /* Stack the search bar and button on mobile */
+    .search-Form {
+      flex-direction: column;
+      gap: 0.8rem !important;
+    }
+    .search-input {
+      width: 100%;
+      margin-right: 0 !important;
+    }
+    .btn-search {
+      width: 100%;
+    }
 
-
-
-
-  /* Navbar solid background on mobile expand */
-@media (max-width: 991.98px) { /* Bootstrap breakpoint for 'lg' and below */
-  .navbar-collapse {
-    background-color: #f8f9fa; /* Change this to your desired background color */
-    padding: 1rem;
-    border-radius: 0.5rem; /* Optional: Adds rounded corners */
+    /* Toggler icon custom styling */
+    .navbar-toggler {
+      border: none;
+    }
+    .navbar-toggler:focus {
+      box-shadow: none;
+    }
+    .navbar-toggler-icon {
+      background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba%280, 0, 0, 0.7%29' stroke-width='2.5' linecap='round' linejoin='round' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+    }
   }
-
-  .navbar-nav {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .navbar-nav.mx-auto {
-    margin: 0; /* Remove the auto margins */
-    padding-top: 1rem; /* Add padding to the top to create space between sections */
-    width: 100%; /* Ensure it takes up full width */
-  }
-
-  .form-inline {
-    width: 100%; /* Make the search form take up full width */
-  }
-
-  .form-inline .search-input {
-    flex-grow: 1; /* Ensure input field grows to fill available space */
-  }
-
-  .navbar-nav.ms-auto {
-    padding-top: 1rem; /* Space between the form and links */
-  }
-
-  /* Style for the toggler icon */
-  .navbar-toggler {
-    border-color: #ddd; /* Change color of toggler border if needed */
-  }
-
-  .navbar-toggler-icon {
-    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba%280, 0, 0, 0.5%29' stroke-width='2' linecap='round' linejoin='round' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E"); /* Custom icon color */
-  }
-}
-
 </style>
-<nav class="navbar navbar-expand-lg bg-body-light border-bottom sticky-top">
-    <div class="container-fluid">
-        <a class="nav-link nav-logo" href="/listings"><i class="fa-regular fa-compass fa-2xl"></i></a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"   data-bs-target="#navbarNavAltMarkup">
-          <span class="navbar-toggler-icon"></span>
+
+<nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top py-2">
+    <div class="container-fluid d-flex justify-content-between align-items-center">
+        
+        <div class="d-flex align-items-center gap-2">
+            <a class="navbar-brand nav-logo m-0" href="/listings">
+                <i class="fa-regular fa-compass fa-2xl" style="color: #fe424d;"></i>
+            </a>
+            <a class="nav-link d-none d-sm-block fw-bold fs-5 text-dark" href="/listings">Explore Wanderlust</a>
+        </div>
+        
+        <button class="navbar-toggler shadow-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup">
+            <span class="navbar-toggler-icon"></span>
         </button>
+        
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-          <div class="navbar-nav">
-            <a class="nav-link" href="/listings"><b>Explore Wanderlust</b></a>
-          </div>
-          <div class="navbar-nav nav-search-btn mx-auto">
-            <form class="form-inline d-flex gap-2 search-Form">
-              <input class="form-control mr-sm-2 search-input search-bar" type="search" placeholder="Search" aria-label="Search">
-              <button class="btn btn-search my-2 my-sm-0 search-btn" type="submit">
-                <i class="fa-solid fa-magnifying-glass"></i>Search
-              </button>
-            </form>
-          </div>
-          <div class="navbar-nav ms-auto gap-4">
-            <a class="nav-link m-2" href="/listings/new/list"><b>List Your Home</b></a>
-            <% if(currentUser){ %>
-              <a class="nav-link m-2" href="/logout"><b>Log Out</b></a>
-              <h2 class="nav-link m-2" ><b><u>@<%= currentUser.username %></u></b></h2>
-            <% } %>
-            <% if(!currentUser){ %>
-              <a class="nav-link m-2" href="/signup"><b>SignUp</b></a>
-              <a class="nav-link m-2" href="/login"><b>Log In</b></a>
-            <% } %>
-          </div>
+            
+            <div class="navbar-nav mx-auto mt-3 mt-lg-0 nav-search-btn">
+                <form class="form-inline d-flex w-100 search-Form">
+                    <input class="form-control search-input flex-grow-1 me-2" type="search" placeholder="Search destinations" aria-label="Search">
+                    <button class="btn btn-search search-btn text-nowrap" type="submit">
+                        <i class="fa-solid fa-magnifying-glass"></i> Search
+                    </button>
+                </form>
+            </div>
+            
+            <div class="navbar-nav ms-auto mt-3 mt-lg-0 align-items-lg-center gap-2 gap-lg-4">
+                <a class="nav-link fw-bold text-dark" href="/listings/new/list">List Your Home</a>
+                
+                <% if(currentUser){ %>
+                    <a class="nav-link fw-bold text-dark" href="/logout">Log Out</a>
+                    <span class="nav-link fw-bold text-muted" style="font-size: 1.1rem;"><u>@<%= currentUser.username %></u></span>
+                <% } else { %>
+                    <a class="nav-link fw-bold text-dark" href="/signup">Sign Up</a>
+                    <a class="nav-link fw-bold text-dark" href="/login">Log In</a>
+                <% } %>
+            </div>
+            
         </div>
     </div>
 </nav>

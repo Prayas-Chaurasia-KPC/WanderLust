@@ -1,225 +1,313 @@
+<% layout('/layouts/boilerplate') -%>
+
 <style>
+    /* =========================================
+       1. FILTER BAR & PERFECT SYMMETRY
+       ========================================= */
     #filters {
         margin-top: 1rem;
         display: flex;
         flex-direction: row;
-        gap: 4rem;
-        justify-items: center;
         align-items: center;
-        justify-content:space-evenly;
+        justify-content: space-between; 
         position: relative;
-        /* border: 2px solid black ; */
+        width: 100%;
+        padding: 0 1rem; 
     }
-    .filter-places{
-        width: 75% ;
+    
+    .filter-places {
+        flex: 1; 
+        max-width: 80%; 
         display: flex;
-        /* border: 2px solid black; */
-        
+        position: relative; /* Essential so arrows stick to its edges */
+        align-items: center;
+        margin: 0 auto; 
     }
+    
     .filter {
         text-align: center;
         margin-top: 1rem;
         opacity: 0.6;
         cursor: pointer;
         user-select: none;
+        color: black;
+        transition: all 0.3s ease-in-out;
+        flex-shrink: 0; 
     }
+    
     .filter.active-filter {
         opacity: 1;
         color: red;
         font-weight: bold;
     }
+    
+    .filter:hover {
+        color: red;
+        scale: 1.2;
+        transition: ease-in-out;
+    }
+
     .tax-toggle {
         width: auto;
         background-color: rgb(255, 255, 255);
         padding: 0.5rem;
         border: 2px solid grey;
         border-radius: 0.5rem;
-        /* margin-left: 1rem; */
+        display: flex;
         justify-content: center;
-        justify-items: center;
         align-items: center;
+        margin-left: 1rem;
     }
+    
     .priceAfterTax {
         display: none;
     }
-    .filter{
-        color:black;
-        transition: all 0.3s ease-in-out;
-    }
-    .filter:hover{
-        color: red;
-        scale: 1.2;
-        transition: ease-in-out;
-    }
+
     .filter-ops {
-        width: auto;
+        width: 100%; 
         display: flex;
         flex-direction: row;
         gap: 2rem;
-        padding-left: 4rem;
-        padding-right: 4rem;
+        padding: 0; 
+        margin: 0 auto;
         z-index: 0;
         overflow-x: auto;
         scroll-behavior: smooth;
         scrollbar-width: none;
     }
+    
     .filter-ops::-webkit-scrollbar {
         display: none;
     }
-    .arrow-filter {
-    position: absolute;
-    top: 50%; /* Keep this here so it's always vertically centered */
-    color: red;
-    background-color: white;
-    border: 1px solid black;
-    padding: 1rem;
-    border-radius: 50%;
-    cursor: pointer;
-    z-index: 1;
-    display: block;
-    
-    /* Animation base states */
-    opacity: 0; 
-    visibility: hidden; 
-    /* Chain both transforms together: center it, AND shrink it */
-    transform: translateY(-50%) scale(0.8); 
-    transition: all 0.3s ease-in-out;
-}
 
-.filter-places:hover .arrow-filter {
-    opacity: 1;
-    visibility: visible;
-    /* Keep the centering, but scale it back up to normal size */
-    transform: translateY(-50%) scale(1); 
-}
+    /* THE SYMMETRY FIX */
+    .filter:first-child {
+        margin-left: 3.5rem; 
+    }
+    .filter:last-child {
+        margin-right: 3.5rem; 
+    }
+    
+    /* ── BASE ARROW STYLING ── */
+    .arrow-filter {
+        position: absolute; /* Always absolute so they float over the track */
+        top: 50%;
+        color: red;
+        background-color: white;
+        border: 1px solid black;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0;
+        border-radius: 50%;
+        cursor: pointer;
+        z-index: 10; /* Keeps them above the scrolling icons */
+        opacity: 0; 
+        visibility: hidden; 
+        transform: translateY(-50%) scale(0.8); 
+        transition: all 0.3s ease-in-out;
+    }
+
+    .filter-places:hover .arrow-filter {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(-50%) scale(1); 
+    }
 
     .arrow-filter:hover {
         color: white;
         background-color: red;
     }
-    .right-filter {
-        /* left: 70%; */
-        right: 25% ;
-    }
-    .left-filter {
-        left: 1%;
-    }
-    .list-location-country {
-        display: none;
-    }
-    .list-country{
-        display: block;
+    
+    /* Desktop Arrow Placement */
+    .right-filter { right: 0; }
+    .left-filter { left: 0; }
+
+    /* ── MOBILE MEDIA QUERIES ── */
+    @media (max-width: 992px) {
+        #filters {
+            flex-direction: column;
+            gap: 1.5rem;
+            justify-content: center;
+            padding: 0; /* Remove padding so filter track spans edge to edge */
+        }
+        
+        .filter-places { 
+            width: 100%; 
+            max-width: 100%;
+        }
+        
+        .filter-ops {
+            width: 100%;
+            gap: 1.5rem;
+        }
+        
+        /* Mobile spacer adjustments */
+        .filter:first-child { margin-left: 3rem; }
+        .filter:last-child { margin-right: 3rem; }
+
+        .arrow-filter {
+            width: 35px;
+            height: 35px;
+            /* Keep absolute positioning on mobile to lock to the sides! */
+            position: absolute; 
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        /* Lock arrows to the absolute ends of the mobile screen */
+        .left-filter { left: 5px; }
+        .right-filter { right: 5px; }
+        
+        .tax-toggle { margin: 0; }
     }
 
-    .card-text{
-        padding: 0.5rem;
-    }
-
-    /* ── FIX: listings use flex so hidden cols don't leave ghost gaps ── */
+    /* =========================================
+       2. RESPONSIVE GRID & CARDS
+       ========================================= */
     .show-all-listings {
         display: flex !important;
         flex-wrap: wrap;
     }
-    /* col wrapper — hidden entirely so no empty space remains */
+    
     .listing-col {
-        display: flex;          /* keeps card stretching full width */
-        padding: 0 12px;        /* match Bootstrap gutter */
+        display: flex;          
+        padding: 0 8px;       
         margin-bottom: 1.5rem;
+        width: 50%; 
+    }
+    
+    @media (min-width: 576px)  { .listing-col { padding: 0 12px; width: 33.333%; } } 
+    @media (min-width: 768px)  { .listing-col { width: 25%; } } 
+    @media (min-width: 992px)  { .listing-col { width: 20%; } } 
+
+    .listing-col.hidden-col { display: none; }
+
+    .card, .img-wrapper {
+        border: none !important;
+        background-color: transparent; 
+        border-radius: 1rem; 
+        position: relative; 
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; 
+    }
+    
+    .card:hover .img-wrapper {
+        transform: scale(1.03); 
+        z-index: 10; 
+        box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px;
+    }
+
+    .img-wrapper {
+        aspect-ratio: 1 / 1; 
+        border-radius: 1rem; 
+        overflow: hidden; 
         width: 100%;
     }
-    @media (min-width: 768px)  { .listing-col { width: 50%; } }
-    @media (min-width: 992px)  { .listing-col { width: 33.333%; } }
 
-    .listing-col.hidden-col {
-        display: none;          /* removes from flow entirely — no gap left behind */
+    .responsive-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .list-title {
+        transition: color 0.3s ease-in-out;
+    }
+    .card:hover .list-title {
+        color: #fe424d; 
+        transform: scale(1.03);
+    }
+
+    .card-text { 
+        padding: 0.75rem 0; 
+    }
+    .list-location-country { display: none; }
+    .list-country { display: block; }
+
+    /* ── CARD TYPOGRAPHY & SCALING ── */
+    .card-text h5, 
+    .card-text h6, 
+    .card-text p {
+        margin-bottom: 0.25rem;
+        white-space: nowrap;        
+        overflow: hidden;           
+        text-overflow: ellipsis;    
+    }
+
+    .list-title {
+        font-size: 1.05rem; 
+        line-height: 1.2;
+    }
+
+    .list-location, 
+    .list-country, 
+    .list-genre {
+        font-size: 0.9rem;
+        color: #717171; 
+        font-weight: 400; 
     }
 
     @media (max-width: 992px) {
-        .filter-ops {
-            width: 90%;
-            padding-left: 1rem;
-            padding-right: 1rem;
-            gap: 1rem;
-        }
-        .arrow-filter {
-            padding: 0.75rem;
-            top: 20%;
-            transform: translateY(-50%);
-        }
-        .right-filter {
-            left: 90%;
-        }
-        .left-filter {
-            left: 0;
-        }
-        .tax-toggle {
-            margin: 0;
-        }
-        #filters {
-            display: flex;
-            flex-direction: column;
-            gap: 2rem;
-        }
+        .list-title { font-size: 0.95rem; }
+        .list-location, .list-country, .list-genre { font-size: 0.85rem; }
+        .card-text p { font-size: 0.9rem; }
     }
 </style>
 
-<% layout('/layouts/boilerplate') -%>
-
 <div id="filters">
-
     <div class="filter-places">
-
         <div class="left-filter arrow-filter">
-            <i class="fa-solid fa-arrow-left fa-xl"></i>
+            <i class="fa-solid fa-arrow-left fa-lg"></i>
         </div>
 
         <div class="filter-ops">
-        <div class="filter active-filter" data-filter="all">
-            <div><i class="fa-solid fa-arrow-trend-up"></i></div>
-            <p><b>Trending</b></p>
-        </div>
-        <div class="filter" data-filter="Rooms">
-            <div><i class="fa-solid fa-bed"></i></div>
-            <p><b>Rooms</b></p>
-        </div>
-        <div class="filter" data-filter="Iconic City">
-            <div><i class="fa-solid fa-mountain-city"></i></div>
-            <p><b>Iconic City</b></p>
-        </div>
-        <div class="filter" data-filter="Castles">
-            <div><i class="fa-brands fa-fort-awesome"></i></div>
-            <p><b>Castles</b></p>
-        </div>
-        <div class="filter" data-filter="Amazing Pools">
-            <div><i class="fa-solid fa-person-swimming"></i></div>
-            <p><b>Amazing Pools</b></p>
-        </div>
-        <div class="filter" data-filter="Camping">
-            <div><i class="fa-solid fa-tent"></i></div>
-            <p><b>Camping</b></p>
-        </div>
-        <div class="filter" data-filter="Farms">
-            <div><i class="fa-solid fa-cow"></i></div>
-            <p><b>Farms</b></p>
-        </div>
-        <div class="filter" data-filter="Arctic">
-            <div><i class="fa-solid fa-person-snowboarding"></i></div>
-            <p><b>Arctic</b></p>
-        </div>
-        <div class="filter" data-filter="Domes">
-            <div><i class="fa-solid fa-igloo"></i></div>
-            <p><b>Domes</b></p>
-        </div>
-        <div class="filter" data-filter="Boats">
-            <div><i class="fa-solid fa-ship"></i></div>
-            <p><b>Boats</b></p>
-        </div>
+            <div class="filter filter-trending active-filter" data-filter="all">
+                <div><i class="fa-solid fa-arrow-trend-up"></i></div>
+                <p><b>Trending</b></p>
+            </div>
+            <div class="filter" data-filter="Rooms">
+                <div><i class="fa-solid fa-bed"></i></div>
+                <p><b>Rooms</b></p>
+            </div>
+            <div class="filter" data-filter="Iconic City">
+                <div><i class="fa-solid fa-mountain-city"></i></div>
+                <p><b>Iconic City</b></p>
+            </div>
+            <div class="filter" data-filter="Castles">
+                <div><i class="fa-brands fa-fort-awesome"></i></div>
+                <p><b>Castles</b></p>
+            </div>
+            <div class="filter" data-filter="Amazing Pools">
+                <div><i class="fa-solid fa-person-swimming"></i></div>
+                <p><b>Amazing Pools</b></p>
+            </div>
+            <div class="filter" data-filter="Camping">
+                <div><i class="fa-solid fa-tent"></i></div>
+                <p><b>Camping</b></p>
+            </div>
+            <div class="filter" data-filter="Farms">
+                <div><i class="fa-solid fa-cow"></i></div>
+                <p><b>Farms</b></p>
+            </div>
+            <div class="filter" data-filter="Arctic">
+                <div><i class="fa-solid fa-person-snowboarding"></i></div>
+                <p><b>Arctic</b></p>
+            </div>
+            <div class="filter" data-filter="Domes">
+                <div><i class="fa-solid fa-igloo"></i></div>
+                <p><b>Domes</b></p>
+            </div>
+            <div class="filter" data-filter="Boats">
+                <div><i class="fa-solid fa-ship"></i></div>
+                <p><b>Boats</b></p>
+            </div>
         </div>
 
         <div class="right-filter arrow-filter">
-            <i class="fa-solid fa-arrow-right fa-xl"></i>
+            <i class="fa-solid fa-arrow-right fa-lg"></i>
         </div>
-      
     </div>
 
     <div class="tax-toggle">
@@ -233,20 +321,23 @@
 <div class="row mt-3 show-all-listings">
     <% for(let listing of allListings){ %>
         <%
-            // Normalize genre to match data-filter values exactly
             let genre = listing.genre || "all";
         %>
         <div class="listing-col" data-category="<%= genre %>">
-            <a href="/listings/<%= listing._id %>" style="text-decoration: none; width: 100%;">
+            <a href="/listings/<%= listing._id %>" style="text-decoration: none; width: 100%; color: inherit;">
                 <div class="card h-100">
-                    <img src="<%= listing.image.url %>" class="card-img-top" alt="Listing Image" style="height: 20rem; object-fit: cover;">
-                    <div class="card-body">
+                    
+                    <div class="img-wrapper">
+                        <img src="<%= listing.image.url %>" class="responsive-img" alt="Listing Image">
+                    </div>
+                    
+                    <div class="card-body px-0">
                         <div class="card-text">
                             <h5 class="list-title"><b><%= listing.title %></b></h5>
                             <h5 class="list-location list-location-country"><b><%= listing.location %></b></h5>
                             <h6 class="list-country list-location-country"><%= listing.country %></h6>
                             <h5 class="list-genre list-location-country"><b><%= listing.genre %></b></h5>
-                            <p>&#x20B9; <%= listing.price.toLocaleString("en-IN") %> / Night
+                            <p class="mt-1">&#x20B9; <%= listing.price.toLocaleString("en-IN") %> / Night
                                 <i class="priceAfterTax"> + 18% GST</i>
                             </p>
                         </div>
@@ -268,13 +359,35 @@
     });
 
     // ── Arrow scroll ────────────────────────────────────────────
-    let filterStrip = document.querySelector(".filter-ops");
-    document.querySelector(".right-filter").addEventListener("click", () => {
+    document.addEventListener("DOMContentLoaded", () => {
+
+    const filterStrip = document.querySelector(".filter-ops");
+    const rightBtn = document.querySelector(".right-filter");
+    const leftBtn = document.querySelector(".left-filter");
+
+    if (!filterStrip) return;
+
+    /* ── Center Scroll on Load ───────────────────────────── */
+    const maxScrollLeft = filterStrip.scrollWidth - filterStrip.clientWidth;
+    const centerPosition = maxScrollLeft / 2;
+
+    // Disable smooth scroll temporarily
+    filterStrip.style.scrollBehavior = "auto";
+    filterStrip.scrollLeft = centerPosition;
+
+    // Re-enable smooth scroll
+    filterStrip.style.scrollBehavior = "smooth";
+
+    /* ── Arrow Scroll ────────────────────────────────────── */
+    rightBtn?.addEventListener("click", () => {
         filterStrip.scrollBy({ left: 200, behavior: "smooth" });
     });
-    document.querySelector(".left-filter").addEventListener("click", () => {
+
+    leftBtn?.addEventListener("click", () => {
         filterStrip.scrollBy({ left: -200, behavior: "smooth" });
     });
+
+});
 
     // ── Category filter ─────────────────────────────────────────
     const filterBtns = document.querySelectorAll(".filter");
@@ -295,7 +408,10 @@
             filterBtns.forEach(b => b.classList.remove("active-filter"));
             btn.classList.add("active-filter");
             applyFilter(btn.dataset.filter);
-            inp.value = ''; // clear search when filter is clicked
+            
+            if(typeof inp !== 'undefined') {
+                inp.value = ''; 
+            }
         });
     });
 </script>

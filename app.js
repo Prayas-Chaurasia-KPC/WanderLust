@@ -34,7 +34,7 @@ const userRouter = require('./routes/user_route.js') ;
 const url = process.env.ATLASDB_URL ; // for deployment
 
 
-// const url = "mongodb://127.0.0.1:27017/wanderLust" ; for run on pc
+// const url = "mongodb://127.0.0.1:27017/wanderLust" ; // for run on pc
 
 async function main(){
     await mongoose.connect(url);
