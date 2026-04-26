@@ -414,4 +414,48 @@
             }
         });
     });
+
+// ── 4. Search Bar Logic ───────────────────────────────────
+        const searchInput = document.querySelector(".search-input");
+        const searchForm = searchInput ? searchInput.closest("form") : null;
+
+        if (searchInput) {
+            const performSearch = (e) => {
+                // Prevent the page from reloading if they hit 'Enter'
+                if (e && e.type === "submit") e.preventDefault(); 
+
+                let searchQuery = searchInput.value.toLowerCase().trim();
+
+                // Reset the category icons to "Trending" when a search starts
+                if (searchQuery.length > 0) {
+                    filterBtns.forEach(b => b.classList.remove("active-filter"));
+                    const allFilter = document.querySelector('.filter[data-filter="all"]');
+                    if (allFilter) allFilter.classList.add("active-filter");
+                }
+
+                // Check every single card on the page
+                listingCols.forEach(col => {
+                    // Extract the text from the card
+                    let title = col.querySelector(".list-title").innerText.toLowerCase();
+                    let location = col.querySelector(".list-location").innerText.toLowerCase();
+                    let country = col.querySelector(".list-country").innerText.toLowerCase();
+
+                    // If the search term is found in ANY of those areas, show the card!
+                    if (title.includes(searchQuery) || location.includes(searchQuery) || country.includes(searchQuery)) {
+                        col.classList.remove("hidden-col");
+                    } else {
+                        // Otherwise, hide it
+                        col.classList.add("hidden-col");
+                    }
+                });
+            };
+
+            // 1. Run search instantly as the user types
+            searchInput.addEventListener("input", performSearch);
+
+            // 2. Run search if the user hits the "Enter" key or clicks a search button
+            if (searchForm) {
+                searchForm.addEventListener("submit", performSearch);
+            }
+        }
 </script>
