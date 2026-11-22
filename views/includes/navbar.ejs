@@ -23,6 +23,9 @@
     width: 100%;
     max-width: 500px; /* Prevents it from getting absurdly wide on 4K monitors */
   }
+  .nav-cur-user >u{
+    color:red ;
+  }
   .search-input {
     padding: 0.5rem 1.2rem;
     border-radius: 25px;
@@ -111,7 +114,7 @@
                 
                 <% if(currentUser){ %>
                     <a class="nav-link fw-bold text-dark" href="/logout">Log Out</a>
-                    <span class="nav-link fw-bold text-muted" style="font-size: 1.1rem;"><u>@<%= currentUser.username %></u></span>
+                    <span class="nav-link nav-cur-user fw-bold text-muted" style="font-size: 1.1rem;"><u><%= currentUser.username %></u></span>
                 <% } else { %>
                     <a class="nav-link fw-bold text-dark" href="/signup">Sign Up</a>
                     <a class="nav-link fw-bold text-dark" href="/login">Log In</a>
