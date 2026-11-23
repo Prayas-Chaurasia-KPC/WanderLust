@@ -1,8 +1,8 @@
 {
   "engines": {
-    "node": "20.17.0"
+    "node": "26.x"
   },
-  "name": "airbnb",
+  "name": "wanderLust",
   "version": "1.0.0",
   "main": "app.js",
   "scripts": {

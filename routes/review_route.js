@@ -4,7 +4,7 @@ const router = express.Router({mergeParams: true});
 const listing = require('../models/listing');
 const review = require('../models/review.js') ;
 const wrapSync = require('../utils/wrapAsync.js') ;
-const { isLoggedIn, isReviewOwner } = require('../middleware.js');
+const { isLoggedIn, isReviewOwner } = require('../authMiddleware.js');
 const {postReview, deleteReview} = require('../controllers/review_controller.js');
 
 // Reviews Route------------------------------------------------
