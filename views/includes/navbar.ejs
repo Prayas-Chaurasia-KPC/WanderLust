@@ -114,7 +114,7 @@
                 
                 <% if(currentUser){ %>
                     <a class="nav-link fw-bold text-dark" href="/logout">Log Out</a>
-                    <span class="nav-link nav-cur-user fw-bold text-muted" style="font-size: 1.1rem;"><u><%= currentUser.username %></u></span>
+                    <span class="nav-link nav-cur-user fw-bold text-muted" style="font-size: 1.1rem;"><u><%= currentUser.username.charAt(0).toUpperCase() + currentUser.username.slice(1).toLowerCase() %></u></span>
                 <% } else { %>
                     <a class="nav-link fw-bold text-dark" href="/signup">Sign Up</a>
                     <a class="nav-link fw-bold text-dark" href="/login">Log In</a>

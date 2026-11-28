@@ -74,11 +74,22 @@
 }
 
 /* review-rating-sumbit */
-.user-dp-name-star {
+.user-dp-name-star-del {
+    width:100% ;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     gap: 0.5rem;
+    /* background-color: aqua; */
+    justify-content:space-between ;
+}
+.user-dp-name-star-del-c1{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    /* background-color: aqua; */
+    justify-content:space-between ;
 }
 
 .reviews-card-text {
@@ -95,13 +106,33 @@
     font-size: large;
 }
 
+
 .rating-comment {
-    margin-left: 3.3rem;
+    width: 100%;
     padding-left: 0.5rem;
-    /* background-color: aquamarine; */
-    border-left: 2px solid black;
-    max-height: 2rem;
-    overflow-y: auto;
+}
+
+.rating-comment p {
+    margin-bottom: 0; /* Removes Bootstrap's default 1rem bottom margin */
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    overflow-wrap: break-word;
+}
+
+.rating-comment.expanded p {
+    display: block;
+    -webkit-line-clamp: unset;
+    max-height: none;
+    overflow: visible;
+}
+
+.rating-comment>p{
+    /* text-align:center ; */
+    overflow-wrap: break-word;
+    /* background-color: coral; */
+
 }
 
 .review-username-star {
@@ -153,38 +184,52 @@
 
 .reviews-warp {
     padding: 1rem;
+    /* overflow: hidden; */
 }
 
 .all-reviews {
     width: 100%; /* Takes full container width */
     display: grid;
-    grid-auto-rows: 1fr; /* Automatically makes all rows equal height */
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Dynamically aligns and wraps cards */
+    grid-auto-columns: 1fr; /*Automatically makes all rows equal height*/
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /*Dynamically aligns and wraps cards*/
+    /* display: flex; */
+    /* flex-direction: row; */
+    /* overflow: hidden; */
+    /* border: 1px solid black; */
+    /* background-color: bisque; */
+    /* height: 30rem; */
+    /* display: flex;
+    flex-direction: column;
+    flex-wrap: wrap; */
+    /* overflow-x: hidden; */
     gap: 1rem;
 }
 
 .reviews-card {
     border: none !important;
     border-radius: 5px !important;
-    padding: 10px;
+    /* padding: 8px; */
     box-sizing: border-box;
-    overflow: auto;
-    position: relative;
+    overflow: hidden;
     width: 100%;
-    min-height: 5rem;
-    display: flex; /* Keeps card contents aligned */
+    height: auto;
+    align-self: flex-start; /* Stops the card from stretching inside a flex/grid parent */
+    display: flex;
+    align-items: flex-start; /* Stops .reviews-card-body from stretching inside .reviews-card */
 }
 
 .reviews-card-body {
     width: 100%;
+    height: 12rem;
     display: flex !important;
     flex-direction: column;
     justify-content: center;
     border: 1px solid black;
     border-radius: 1rem;
-    padding: 1rem;
+    padding: 0.8rem;
     font-size: medium;
-    flex-grow: 1; /* Allows the body to stretch and match heights with sibling cards */
+    overflow: auto;
+    /* background-color: aliceblue; */
 }
 
 .rating-star-div {

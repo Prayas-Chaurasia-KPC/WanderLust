@@ -56,37 +56,46 @@
                             <div class="reviews-card">
                                 <div class="reviews-card-body">
                                     <div class=" reviews-card-text">
-                                        <div class="user-dp-name-star">
-                                            <div class="user-dp">
-                                                <i class="fa-solid fa-user fa-xl comment-user"></i>
-                                            </div>
-                                            <div class="review-username-star">
-                                                <h5><b><%= listRev.owner.username %></b></h5>
-                                                <div class="rating-star rating-star-div">
-                                                    <p class="starability-result rating-star" data-rating="<%= listRev.rating %>"></p>
+                                        <div class="user-dp-name-star-del">
+                                            <div class="user-dp-name-star-del-c1">
+                                                <div class="user-dp">
+                                                    <i class="fa-solid fa-user fa-xl comment-user"></i>
+                                                </div>
+                                                <div class="review-username-star">
+                                                    <h5><b><%= listRev.owner.username.charAt(0).toUpperCase() + listRev.owner.username.slice(1).toLowerCase() %></b></h5>
+                                                    <div class="rating-star rating-star-div">
+                                                        <p class="starability-result rating-star" data-rating="<%= listRev.rating %>"></p>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="review-del-btn-wrap">
-                                            <% if(currentUser && currentUser._id.equals(listRev.owner._id)){ %>
-                                                <div class="review-btn">
-                                                    <form method="POST" action="/listings/<%= listID._id %>/reviews/<%= listRev._id %>?_method=DELETE">
-                                                        <button title="Delete Comment" class="btn btn-sm btn-dark review-del-btn">
-                                                            <i class="fa-solid fa-trash"></i>
-                                                        </button>
-                                                    </form>
+                                            <div class="user-dp-name-star-del-c2">
+                                                <div class="review-del-btn-wrap">
+                                                    <% if(currentUser && currentUser._id.equals(listRev.owner._id)){ %>
+                                                        <div class="review-btn">
+                                                            <form method="POST" action="/listings/<%= listID._id %>/reviews/<%= listRev._id %>?_method=DELETE">
+                                                                <button title="Delete Comment" class="btn btn-sm btn-dark review-del-btn">
+                                                                    <i class="fa-solid fa-trash"></i>
+                                                                </button>
+                                                            </form>
+                                                        </div>
+                                                        <% } %>
                                                 </div>
-                                                <% } %>
+                                            </div>
                                         </div>
                                     </div>
-                                    <p class="rating-comment"><i><%= listRev.comment %></i></p>
+                                    <div class="rating-comment">
+                                        <p><q><%= listRev.comment %></q></p>
+                                    </div>
+                                    <button type="button" class="btn btn-link btn-sm p-0 toggle-review-btn">Read more</button>
                                 </div>
                            </div>
                        <% } %>
                     </div>
-                 </div>
-                 <hr>
-                 <% if(currentUser){ %>
+                </div>
+
+                <hr>
+
+                <% if(currentUser){ %>
                     <div class="comment-wrap">
                        <h4><b>Add Your Review</b></h4>
                        <form method="POST" action="/listings/<%= listID._id %>/reviews" novalidate class="needs-validation">
@@ -122,9 +131,29 @@
                            </div>
                        </form>
                     </div>
-                 <%}%>
+                <%}%>
                  
             </div>
         </div>
     </div>
 </body>
+<script>
+    // In your JS file (or inside <script> at the bottom of your EJS template)
+document.querySelectorAll(".toggle-review-btn").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    const commentDiv = btn.previousElementSibling; // Targets .rating-comment
+    commentDiv.classList.toggle("expanded");
+
+    btn.textContent = commentDiv.classList.contains("expanded")
+      ? "Show less"
+      : "Read more";
+  });
+});
+document.querySelectorAll(".rating-comment").forEach((commentDiv) => {
+  const p = commentDiv.querySelector("p");
+  const btn = commentDiv.nextElementSibling;
+  if (p.scrollHeight <= p.clientHeight && btn) {
+    btn.style.display = "none";
+  }
+});
+</script>
